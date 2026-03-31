@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-$8n#&_*3^r_0_@r!xe8dj6hgn4cbl3h-u7wbn664h#0918d+lv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -128,27 +128,3 @@ LOGIN_REDIRECT_URL = 'learning_logs:index'
 LOGOUT_REDIRECT_URL = 'learning_logs:index'
 LOGIN_URL = 'accounts:login'
 
-#platform.sh settings.
-from platformshconfig import Config
-
-config = Config()
-if config.is_valid_platform():
-    ALLOWED_HOSTS.append('.platform.site')
-
-    if config.appDir:
-        STATIC_ROOT= Path(config.appDir) / 'static'
-    if config.projectEntropy:
-        SECRETKEY = config.projectEntropy
-
-    if not config.in_build():
-        db_settings=config.credentials('database')
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.postgresql',
-                'NAME': db_settings['path'],
-                'USER': db_settings['username'],
-                'PASSWORD': db_settings['password'],
-                'HOST': db_settings['host'],
-                'PORT': db_settings['port'],
-            },
-        }
